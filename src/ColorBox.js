@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ColorBox.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ColorBox = ({ background, name }) => {
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    let t = setTimeout(() => setCopied(false), 1400);
-    return () => {
-      clearTimeout(t);
-    };
-  }, [copied]);
+  const handleCopy = () => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
-    <CopyToClipboard text={background} onCopy={() => setCopied(true)}>
+    <CopyToClipboard text={background} onCopy={handleCopy}>
       <div style={{ background }} className="ColorBox">
         <div
           style={{ background }}
@@ -26,7 +24,7 @@ const ColorBox = ({ background, name }) => {
           <div className="box-content">
             <span>{name}</span>
           </div>
-          <button className="copy-btn" onClick={() => setCopied(true)}>
+          <button className="copy-btn" onClick={handleCopy}>
             Copy
           </button>
         </div>

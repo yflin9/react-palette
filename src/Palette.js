@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import ColorBox from "./ColorBox";
-import Navbar from "./Navbar";
+import React, { useState } from "react"
+import ColorBox from "./ColorBox"
+import Navbar from "./Navbar"
 
-import "./Palette.css";
+import "./Palette.css"
 
 const Palette = ({ palette }) => {
-  const { colors, paletteName, emoji } = palette;
-  const [level, setLevel] = useState(400);
-  const [format, setFormat] = useState("hex");
+  const { colors, paletteName, emoji } = palette
+  const [level, setLevel] = useState(400)
+  const [format, setFormat] = useState("hex")
 
   const colorBoxes = colors[level].map((color) => (
     <ColorBox key={color.id} background={color[format]} name={color.name} />
-  ));
+  ))
 
   return (
     <>
@@ -28,7 +28,7 @@ const Palette = ({ palette }) => {
         </footer>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Palette;
+export default Palette

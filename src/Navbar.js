@@ -1,27 +1,30 @@
-import React, { useState } from "react";
-import Slider from "rc-slider";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import Slider from "rc-slider"
+import Select from "@material-ui/core/Select"
+import MenuItem from "@material-ui/core/MenuItem"
+import Snackbar from "@material-ui/core/Snackbar"
+import IconButton from "@material-ui/core/IconButton"
+import CloseIcon from "@material-ui/icons/Close"
 
-import "rc-slider/assets/index.css";
-import "./Navbar.css";
+import "rc-slider/assets/index.css"
+import "./Navbar.css"
 
 const Navbar = ({ level, setLevel, changeFormat }) => {
-  const [format, setFormat] = useState("hex");
-  const [open, setOpen] = useState(false);
+  const [format, setFormat] = useState("hex")
+  const [open, setOpen] = useState(false)
 
   const handleFormatChange = (e) => {
-    changeFormat(e.target.value);
-    setFormat(e.target.value);
-    setOpen(true);
-  };
+    changeFormat(e.target.value)
+    setFormat(e.target.value)
+    setOpen(true)
+  }
 
   return (
     <nav className="Navbar">
-      <div className="logo">Colorlogo</div>
+      <div className="logo">
+        <Link to="/">Colorlogo</Link>
+      </div>
       <div className="slider-container">
         <span>Brightness Level: {level}</span>
         <div className="slider">
@@ -58,7 +61,7 @@ const Navbar = ({ level, setLevel, changeFormat }) => {
         ]}
       />
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

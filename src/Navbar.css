@@ -16,6 +16,11 @@
   letter-spacing: 3px;
 }
 
+.logo a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .slider {
   width: 350px;
   margin: 0 10px;

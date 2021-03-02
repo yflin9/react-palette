@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import "./ColorBox.css";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import "./ColorBox.css"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
-const ColorBox = ({ background, name }) => {
-  const [copied, setCopied] = useState(false);
+const ColorBox = ({ name, background, showLink, moreURL }) => {
+  const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
 
   return (
     <CopyToClipboard text={background} onCopy={handleCopy}>
@@ -28,10 +29,14 @@ const ColorBox = ({ background, name }) => {
             Copy
           </button>
         </div>
-        <span className="more">More</span>
+        {showLink && (
+          <Link to={moreURL} onClick={(e) => e.stopPropagation()}>
+            <span className="more">More</span>
+          </Link>
+        )}
       </div>
     </CopyToClipboard>
-  );
-};
+  )
+}
 
-export default ColorBox;
+export default ColorBox

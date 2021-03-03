@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import "./ColorBox.css"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import styles from "./styles/ColorBoxStyles"
+import { withStyles } from "@material-ui/styles"
 
-const ColorBox = ({ name, background, showLink, moreURL }) => {
+const ColorBox = ({ name, background, fullPalette, moreURL, classes }) => {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -13,25 +14,29 @@ const ColorBox = ({ name, background, showLink, moreURL }) => {
 
   return (
     <CopyToClipboard text={background} onCopy={handleCopy}>
-      <div style={{ background }} className="ColorBox">
+      <div style={{ background }} className={classes.ColorBox}>
         <div
           style={{ background }}
-          className={`copy-overlay ${copied && "show"}`}
+          className={`${classes.copyOverlay} ${copied && classes.showOverlay}`}
         ></div>
-        <div className={`copy-overlay-msg ${copied && "show"}`}>
-          <h2>Copied {background}</h2>
+        <div
+          className={`${classes.overlayMsg} ${
+            copied && classes.showOverlayMsg
+          }`}
+        >
+          <h2 className={classes.copyText}>Copied {background}</h2>
         </div>
-        <div className="copy-container">
-          <div className="box-content">
-            <span>{name}</span>
+        <div>
+          <div className={classes.boxContent}>
+            <span className={classes.colorName}>{name}</span>
           </div>
-          <button className="copy-btn" onClick={handleCopy}>
+          <button className={classes.copyBtn} onClick={handleCopy}>
             Copy
           </button>
         </div>
-        {showLink && (
+        {fullPalette && (
           <Link to={moreURL} onClick={(e) => e.stopPropagation()}>
-            <span className="more">More</span>
+            <span className={classes.moreBtn}>More</span>
           </Link>
         )}
       </div>
@@ -39,4 +44,4 @@ const ColorBox = ({ name, background, showLink, moreURL }) => {
   )
 }
 
-export default ColorBox
+export default withStyles(styles)(ColorBox)

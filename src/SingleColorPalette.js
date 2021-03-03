@@ -3,12 +3,14 @@ import { Link } from "react-router-dom"
 import Navbar from "./Navbar"
 import ColorBox from "./ColorBox"
 import PaletteFooter from "./PaletteFooter"
+import { withStyles } from "@material-ui/styles"
+import styles from "./styles/PaletteStyles"
 
-const SingleColorPalette = ({ palette, colorId }) => {
+const SingleColorPalette = ({ palette, colorId, classes }) => {
   const [format, setFormat] = useState("hex")
   const { colors, id, paletteName, emoji } = palette
 
-  const getShades = (palette, singleColor) => {
+  const getShades = (singleColor) => {
     let shades = []
     for (let key in colors) {
       shades = shades.concat(
@@ -18,18 +20,18 @@ const SingleColorPalette = ({ palette, colorId }) => {
     return shades.slice(1)
   }
 
-  const colorBoxes = getShades(palette, colorId).map((color) => (
+  const colorBoxes = getShades(colorId).map((color) => (
     <ColorBox key={color.name} name={color.name} background={color[format]} />
   ))
 
   return (
-    <div className="Palette SingleColorPalette">
+    <div className={classes.Palette}>
       <Navbar showSlider={false} changeFormat={(v) => setFormat(v)} />
-      <div className="Palette-colors">
+      <div className={classes.PaletteColors}>
         {colorBoxes}
-        <div className="go-back ColorBox">
+        <div className={classes.goBack}>
           <Link to={`/palette/${id}`}>
-            <div className="back-btn">Go back</div>
+            <div>Go back</div>
           </Link>
         </div>
       </div>
@@ -38,4 +40,4 @@ const SingleColorPalette = ({ palette, colorId }) => {
   )
 }
 
-export default SingleColorPalette
+export default withStyles(styles)(SingleColorPalette)

@@ -17,6 +17,7 @@ const styles = {
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
     color: "white",
   },
   palettes: {
@@ -25,6 +26,15 @@ const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(3, 30%)",
     gridGap: "5%",
+  },
+  addIcon: {
+    fontSize: "2rem",
+    textDecoration: "none",
+    color: "white",
+    "&:hover": {
+      color: "black",
+      transition: "0.3s ease-in-out",
+    },
   },
 }
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-
 import clsx from "clsx"
 import { makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
@@ -11,7 +10,9 @@ import Divider from "@material-ui/core/Divider"
 import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from "@material-ui/icons/Menu"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
+import DraggableColorBox from "./DraggableColorBox"
 
 import { ChromePicker } from "react-color"
 
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    height: "calc(100vh - 64px)",
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
@@ -74,12 +76,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const NewPaletteForm = () => {
+const NewPaletteForm = ({ history, savePalette }) => {
   const classes = useStyles()
   // const theme = useTheme()
   const [open, setOpen] = useState(false)
   const [currentColor, setCurrentColor] = useState("black")
-  const [colors, setColors] = useState(["black"])
+  const [colors, setColors] = useState([])
+  const [name, setName] = useState("black")
+  const [validated, setValidated] = useState(true)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -94,7 +98,36 @@ const NewPaletteForm = () => {
   }
 
   const addNewColor = () => {
-    setColors([...colors, currentColor])
+    if (
+      colors.every(
+        (color) => color.name.toLowerCase() !== name.toLowerCase()
+      ) &&
+      colors.every((color) => color.color !== currentColor) &&
+      !name.match("^$")
+    ) {
+      const newColor = { color: currentColor, name }
+      setColors([...colors, newColor])
+      setName("")
+      setValidated(true)
+    } else {
+      setValidated(false)
+    }
+  }
+
+  const handleNameChange = (e) => {
+    setName(e.target.value)
+  }
+
+  const handleSavePalette = () => {
+    let newName = "New Palette Name"
+    const newPalette = {
+      paletteName: newName,
+      id: newName.toLowerCase().replace(/ /g, "-"),
+      emoji: "🎨",
+      colors: colors,
+    }
+    savePalette(newPalette)
+    history.push("/")
   }
 
   return (
@@ -102,6 +135,7 @@ const NewPaletteForm = () => {
       <CssBaseline />
       <AppBar
         position="fixed"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -119,6 +153,13 @@ const NewPaletteForm = () => {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSavePalette}
+          >
+            Save Palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -145,6 +186,24 @@ const NewPaletteForm = () => {
           Random Color
         </Button>
         <ChromePicker color={currentColor} onChangeComplete={updateColor} />
+        {validated ? (
+          <TextField
+            required
+            label="Color Name"
+            value={name}
+            onChange={handleNameChange}
+            variant="filled"
+          />
+        ) : (
+          <TextField
+            error
+            label="Error"
+            helperText="Color/Name must be unique"
+            onChange={handleNameChange}
+            variant="outlined"
+          />
+        )}
+
         <Button
           variant="contained"
           color="primary"
@@ -160,11 +219,14 @@ const NewPaletteForm = () => {
         })}
       >
         <div className={classes.drawerHeader} />
-        <ul>
-          {colors.map((color) => (
-            <li style={{ backgroundColor: color }}>{color}</li>
-          ))}
-        </ul>
+
+        {colors.map((color) => (
+          <DraggableColorBox
+            key={color.name}
+            color={color.color}
+            name={color.name}
+          />
+        ))}
       </main>
     </div>
   )

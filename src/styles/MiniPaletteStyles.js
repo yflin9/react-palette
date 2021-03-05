@@ -5,8 +5,14 @@ const styles = {
     padding: "0.5rem",
     position: "relative",
     overflow: "hidden",
-    "& :hover": {
+    transform: "scale(1)",
+    boxShadow: "0 0 0px 0px rgba(0, 0, 0, 0.45)",
+    transition: "0.3s ease-out",
+    "&:hover": {
       cursor: "pointer",
+      transform: "scale(1.05)",
+      boxShadow: "0 0 20px 0px rgba(0, 0, 0, 0.45)",
+      transition: "0.3s ease-out",
     },
   },
   colors: {

@@ -76,12 +76,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const NewPaletteForm = ({ history, palettes, savePalette }) => {
+const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
   const classes = useStyles()
   // const theme = useTheme()
   const [open, setOpen] = useState(false)
   const [currentColor, setCurrentColor] = useState("black")
-  const [colors, setColors] = useState([])
+  const [colors, setColors] = useState(palettes[0].colors)
   const [name, setName] = useState("black")
   const [validation, setValidation] = useState({
     error: false,
@@ -94,6 +94,7 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
     label: "Name",
     helperText: "Enter Palette Name",
   })
+  const paletteIsFull = colors.length >= maxColor
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -133,6 +134,16 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
     }
   }
 
+  const addRandomColor = () => {
+    const allColors = palettes.map((p) => p.colors).flat()
+    const randomColor = allColors[Math.floor(Math.random() * allColors.length)]
+    colors.find(
+      (color) => color.name.toLowerCase() === randomColor.name.toLowerCase()
+    )
+      ? addRandomColor()
+      : setColors([...colors, randomColor])
+  }
+
   const removeColor = (colorName) => {
     setColors(colors.filter((color) => color.name !== colorName))
   }
@@ -157,6 +168,10 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
     } else {
       handleSavePalette()
     }
+  }
+
+  const clearPalette = () => {
+    setColors([])
   }
 
   const handleNameChange = (e) => {
@@ -199,7 +214,7 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Persistent drawer CREATE PALETTE
           </Typography>
           <TextField
             error={pvalidation.error}
@@ -208,6 +223,13 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
             onChange={(e) => setPname(e.target.value)}
             variant="outlined"
           />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => history.push("/")}
+          >
+            Go Back
+          </Button>
           <Button variant="contained" color="primary" onClick={addNewPalette}>
             Save Palette
           </Button>
@@ -230,10 +252,15 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
         <Divider />
         <Typography variant="h4">Design your Palette</Typography>
 
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={clearPalette}>
           Clear Palette
         </Button>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={paletteIsFull}
+          onClick={addRandomColor}
+        >
           Random Color
         </Button>
         <ChromePicker color={currentColor} onChangeComplete={updateColor} />
@@ -250,10 +277,11 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
         <Button
           variant="contained"
           color="primary"
-          style={{ backgroundColor: currentColor }}
+          style={{ backgroundColor: paletteIsFull ? "#eee" : currentColor }}
+          disabled={paletteIsFull}
           onClick={addNewColor}
         >
-          Add Color
+          {paletteIsFull ? "Palette Full" : "Add Color"}
         </Button>
       </Drawer>
       <main
@@ -272,6 +300,10 @@ const NewPaletteForm = ({ history, palettes, savePalette }) => {
       </main>
     </div>
   )
+}
+
+NewPaletteForm.defaultProps = {
+  maxColor: 20,
 }
 
 export default NewPaletteForm

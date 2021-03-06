@@ -12,9 +12,9 @@ import MenuIcon from "@material-ui/icons/Menu"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-import DraggableColorBox from "./DraggableColorBox"
-
+import DraggableColorList from "./DraggableColorList"
 import { ChromePicker } from "react-color"
+import { arrayMove } from "react-sortable-hoc"
 
 const drawerWidth = 240
 
@@ -76,14 +76,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const NewPaletteForm = ({ history, savePalette }) => {
+const NewPaletteForm = ({ history, palettes, savePalette }) => {
   const classes = useStyles()
   // const theme = useTheme()
   const [open, setOpen] = useState(false)
   const [currentColor, setCurrentColor] = useState("black")
   const [colors, setColors] = useState([])
   const [name, setName] = useState("black")
-  const [validated, setValidated] = useState(true)
+  const [validation, setValidation] = useState({
+    error: false,
+    label: "Name",
+    helperText: "Enter Color Name",
+  })
+  const [pname, setPname] = useState("Palette Name")
+  const [pvalidation, setPvalidation] = useState({
+    error: false,
+    label: "Name",
+    helperText: "Enter Palette Name",
+  })
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -99,18 +109,53 @@ const NewPaletteForm = ({ history, savePalette }) => {
 
   const addNewColor = () => {
     if (
-      colors.every(
-        (color) => color.name.toLowerCase() !== name.toLowerCase()
-      ) &&
-      colors.every((color) => color.color !== currentColor) &&
-      !name.match("^$")
+      colors.find((color) => color.name.toLowerCase() === name.toLowerCase())
     ) {
+      setValidation({
+        error: true,
+        label: "Error",
+        helperText: "Color name must be unique",
+      })
+    } else if (colors.find((color) => color.color === currentColor)) {
+      setValidation({
+        error: true,
+        label: "Error",
+        helperText: "Color must be unique",
+      })
+    } else {
       const newColor = { color: currentColor, name }
       setColors([...colors, newColor])
-      setName("")
-      setValidated(true)
+      setValidation({
+        error: false,
+        label: "Name",
+        helperText: "Enter Color Name",
+      })
+    }
+  }
+
+  const removeColor = (colorName) => {
+    setColors(colors.filter((color) => color.name !== colorName))
+  }
+
+  const addNewPalette = () => {
+    if (
+      palettes.find(
+        (palette) => palette.paletteName.toLowerCase() === pname.toLowerCase()
+      )
+    ) {
+      setPvalidation({
+        error: true,
+        label: "Error",
+        helperText: "Palette name must be unique",
+      })
+    } else if (pname.toLowerCase().replace(/ /g, "") === "") {
+      setPvalidation({
+        error: true,
+        label: "Error",
+        helperText: "Palette name must not be empty",
+      })
     } else {
-      setValidated(false)
+      handleSavePalette()
     }
   }
 
@@ -119,15 +164,18 @@ const NewPaletteForm = ({ history, savePalette }) => {
   }
 
   const handleSavePalette = () => {
-    let newName = "New Palette Name"
     const newPalette = {
-      paletteName: newName,
-      id: newName.toLowerCase().replace(/ /g, "-"),
+      paletteName: pname,
+      id: pname.toLowerCase().replace(/ /g, "-"),
       emoji: "🎨",
       colors: colors,
     }
     savePalette(newPalette)
     history.push("/")
+  }
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setColors(arrayMove(colors, oldIndex, newIndex))
   }
 
   return (
@@ -153,11 +201,14 @@ const NewPaletteForm = ({ history, savePalette }) => {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSavePalette}
-          >
+          <TextField
+            error={pvalidation.error}
+            label={pvalidation.label}
+            helperText={pvalidation.helperText}
+            onChange={(e) => setPname(e.target.value)}
+            variant="outlined"
+          />
+          <Button variant="contained" color="primary" onClick={addNewPalette}>
             Save Palette
           </Button>
         </Toolbar>
@@ -186,23 +237,15 @@ const NewPaletteForm = ({ history, savePalette }) => {
           Random Color
         </Button>
         <ChromePicker color={currentColor} onChangeComplete={updateColor} />
-        {validated ? (
-          <TextField
-            required
-            label="Color Name"
-            value={name}
-            onChange={handleNameChange}
-            variant="filled"
-          />
-        ) : (
-          <TextField
-            error
-            label="Error"
-            helperText="Color/Name must be unique"
-            onChange={handleNameChange}
-            variant="outlined"
-          />
-        )}
+
+        <TextField
+          error={validation.error}
+          label={validation.label}
+          value={name}
+          helperText={validation.helperText}
+          onChange={handleNameChange}
+          variant="outlined"
+        />
 
         <Button
           variant="contained"
@@ -220,13 +263,12 @@ const NewPaletteForm = ({ history, savePalette }) => {
       >
         <div className={classes.drawerHeader} />
 
-        {colors.map((color) => (
-          <DraggableColorBox
-            key={color.name}
-            color={color.color}
-            name={color.name}
-          />
-        ))}
+        <DraggableColorList
+          colors={colors}
+          removeColor={removeColor}
+          axis="xy"
+          onSortEnd={onSortEnd}
+        />
       </main>
     </div>
   )

@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    display: "flex",
+    alignItems: "center",
   },
   drawerHeader: {
     display: "flex",
@@ -34,10 +36,23 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   },
+  drawerTitle: {
+    margin: "2rem 0",
+  },
+  drawerBtn: {
+    width: "100%",
+    marginBottom: "0.5rem",
+  },
+  colorPicker: {
+    margin: "1rem 0",
+  },
+  colorNameInput: {
+    margin: "1.5rem 0",
+  },
   content: {
     flexGrow: 1,
     height: "calc(100vh - 64px)",
-    padding: theme.spacing(3),
+    // padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -58,7 +73,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
   const [open, setOpen] = useState(false)
   const [currentColor, setCurrentColor] = useState("black")
   const [colors, setColors] = useState(palettes[0].colors)
-  const [name, setName] = useState("black")
+  const [name, setName] = useState("")
   const [validation, setValidation] = useState({
     error: false,
     label: "Name",
@@ -101,6 +116,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
         label: "Name",
         helperText: "Enter Color Name",
       })
+      setName("")
     }
   }
 
@@ -161,9 +177,16 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           </IconButton>
         </div>
         <Divider />
-        <Typography variant="h4">Design your Palette</Typography>
+        <Typography variant="h5" className={classes.drawerTitle}>
+          Design your Palette
+        </Typography>
 
-        <Button variant="contained" color="secondary" onClick={clearPalette}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={clearPalette}
+          className={classes.drawerBtn}
+        >
           Clear Palette
         </Button>
         <Button
@@ -171,10 +194,16 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           color="primary"
           disabled={paletteIsFull}
           onClick={addRandomColor}
+          className={classes.drawerBtn}
         >
           Random Color
         </Button>
-        <ChromePicker color={currentColor} onChangeComplete={updateColor} />
+        <ChromePicker
+          disableAlpha={true}
+          color={currentColor}
+          onChange={updateColor}
+          className={classes.colorPicker}
+        />
 
         <TextField
           error={validation.error}
@@ -183,6 +212,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           helperText={validation.helperText}
           onChange={handleNameChange}
           variant="outlined"
+          className={classes.colorNameInput}
         />
 
         <Button
@@ -191,6 +221,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           style={{ backgroundColor: paletteIsFull ? "#eee" : currentColor }}
           disabled={paletteIsFull}
           onClick={addNewColor}
+          className={classes.drawerBtn}
         >
           {paletteIsFull ? "Palette Full" : "Add Color"}
         </Button>

@@ -7,8 +7,8 @@ import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import MenuIcon from "@material-ui/icons/Menu"
 import IconButton from "@material-ui/core/IconButton"
-import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
+import SavePaletteDialog from "./SavePaletteDialog"
 
 const drawerWidth = 240
 
@@ -65,7 +65,16 @@ const PaletteFormNav = ({
   })
   const classes = useStyles()
 
+  const handleChange = (e) => {
+    setName(e.target.value)
+  }
+
   const addNewPalette = () => {
+    setValidation({
+      error: false,
+      label: "Name",
+      helperText: "Enter Palette Name",
+    })
     if (
       palettes.find(
         (palette) => palette.paletteName.toLowerCase() === name.toLowerCase()
@@ -118,13 +127,6 @@ const PaletteFormNav = ({
             </Typography>
           </div>
           <div className={classes.navBtns}>
-            <TextField
-              error={validation.error}
-              label={validation.label}
-              helperText={validation.helperText}
-              onChange={(e) => setName(e.target.value)}
-              variant="outlined"
-            />
             <Button
               variant="contained"
               color="secondary"
@@ -132,9 +134,11 @@ const PaletteFormNav = ({
             >
               Go Back
             </Button>
-            <Button variant="contained" color="primary" onClick={addNewPalette}>
-              Save Palette
-            </Button>
+            <SavePaletteDialog
+              validation={validation}
+              handleChange={handleChange}
+              addNewPalette={addNewPalette}
+            />
           </div>
         </Toolbar>
       </AppBar>

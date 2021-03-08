@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
@@ -6,15 +6,25 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
+import "emoji-mart/css/emoji-mart.css"
+import { Picker } from "emoji-mart"
 
-const SavePaletteDialog = ({ handleChange, validation, addNewPalette }) => {
-  const [open, setOpen] = React.useState(false)
+const SavePaletteDialog = ({
+  handleChange,
+  validation,
+  addNewPalette,
+  resetForm,
+  showEmoji,
+  handleSaveEmoji,
+}) => {
+  const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
   }
 
   const handleClose = () => {
+    resetForm()
     setOpen(false)
   }
 
@@ -22,11 +32,18 @@ const SavePaletteDialog = ({ handleChange, validation, addNewPalette }) => {
     addNewPalette()
   }
 
+  const handleSelect = (emoji) => {
+    handleSaveEmoji(emoji.native)
+  }
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Save Palette
       </Button>
+      <Dialog open={showEmoji}>
+        <Picker onSelect={handleSelect} />
+      </Dialog>
+
       <Dialog
         open={open}
         onClose={handleClose}

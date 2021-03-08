@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   navBtns: {
     display: "flex",
     alignItems: "center",
+    "&>*": {
+      marginLeft: "1rem",
+    },
   },
 }))
 
@@ -63,18 +66,22 @@ const PaletteFormNav = ({
     label: "Name",
     helperText: "Enter Palette Name",
   })
+  const [showEmoji, setShowEmoji] = useState(false)
   const classes = useStyles()
 
   const handleChange = (e) => {
     setName(e.target.value)
   }
 
-  const addNewPalette = () => {
+  const resetForm = () => {
     setValidation({
       error: false,
       label: "Name",
       helperText: "Enter Palette Name",
     })
+  }
+
+  const addNewPalette = () => {
     if (
       palettes.find(
         (palette) => palette.paletteName.toLowerCase() === name.toLowerCase()
@@ -92,13 +99,17 @@ const PaletteFormNav = ({
         helperText: "Palette name must not be empty",
       })
     } else {
-      handleSavePalette({
-        paletteName: name,
-        id: name.toLowerCase().replace(/ /g, "-"),
-        emoji: "🎨",
-        colors: colors,
-      })
+      setShowEmoji(true)
     }
+  }
+
+  const handleSaveEmoji = (emoji) => {
+    handleSavePalette({
+      paletteName: name,
+      id: name.toLowerCase().replace(/ /g, "-"),
+      emoji: emoji,
+      colors: colors,
+    })
   }
 
   return (
@@ -138,6 +149,9 @@ const PaletteFormNav = ({
               validation={validation}
               handleChange={handleChange}
               addNewPalette={addNewPalette}
+              resetForm={resetForm}
+              showEmoji={showEmoji}
+              handleSaveEmoji={handleSaveEmoji}
             />
           </div>
         </Toolbar>

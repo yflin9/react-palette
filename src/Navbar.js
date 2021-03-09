@@ -11,7 +11,13 @@ import { withStyles } from "@material-ui/styles"
 import styles from "./styles/NavbarStyles"
 import "rc-slider/assets/index.css"
 
-const Navbar = ({ level, setLevel, changeFormat, showSlider, classes }) => {
+const Navbar = ({
+  level,
+  handleLevelChange,
+  changeFormat,
+  showSlider,
+  classes,
+}) => {
   const [format, setFormat] = useState("hex")
   const [open, setOpen] = useState(false)
 
@@ -35,16 +41,16 @@ const Navbar = ({ level, setLevel, changeFormat, showSlider, classes }) => {
               min={100}
               max={900}
               step={100}
-              onAfterChange={setLevel}
+              onAfterChange={handleLevelChange}
             />
           </div>
         </div>
       )}
       <div className={classes.selectContainer}>
         <Select value={format} onChange={handleFormatChange}>
-          <MenuItem value="hex">HEX - </MenuItem>
-          <MenuItem value="rgb">RGB - </MenuItem>
-          <MenuItem value="rgba">RGBA - </MenuItem>
+          <MenuItem value="hex">HEX - #000000</MenuItem>
+          <MenuItem value="rgb">RGB - (0, 0, 0)</MenuItem>
+          <MenuItem value="rgba">RGBA - (0, 0, 0, 1)</MenuItem>
         </Select>
       </div>
       <Snackbar

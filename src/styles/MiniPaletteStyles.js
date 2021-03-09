@@ -39,7 +39,7 @@ const styles = {
     width: "20%",
     display: "inline-block",
     position: "relative",
-    marginBottom: "-3.5px",
+    marginBottom: "-4px",
   },
 }
 

@@ -41,6 +41,7 @@ const SavePaletteDialog = ({
         Save Palette
       </Button>
       <Dialog open={showEmoji}>
+        <DialogTitle id="pick-emoji-title">Chosse a palette Emoji</DialogTitle>
         <Picker onSelect={handleSelect} />
       </Dialog>
 

@@ -25,8 +25,8 @@ const Palette = ({ palette, classes }) => {
       <div className={classes.Palette}>
         <Navbar
           level={level}
-          setLevel={setLevel}
-          changeFormat={(v) => setFormat(v)}
+          handleLevelChange={setLevel}
+          changeFormat={(f) => setFormat(f)}
           showSlider={true}
         />
         <div className={classes.PaletteColors}>{colorBoxes}</div>

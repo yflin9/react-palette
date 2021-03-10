@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
-import MenuIcon from "@material-ui/icons/Menu"
+import LibraryAddIcon from "@material-ui/icons/LibraryAdd"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import SavePaletteDialog from "./SavePaletteDialog"
@@ -89,7 +89,7 @@ const PaletteFormNav = ({
               edge="start"
               className={clsx(classes.menuButton, open && classes.hide)}
             >
-              <MenuIcon />
+              <LibraryAddIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
               Create a palette

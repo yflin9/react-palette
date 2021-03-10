@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: "flex",
     alignItems: "center",
+    width: "100%",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "2rem 0",
   },
   drawerBtn: {
-    width: "100%",
+    width: "95%",
     marginBottom: "0.5rem",
   },
   colorPicker: {

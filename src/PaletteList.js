@@ -5,7 +5,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox"
 import { withStyles } from "@material-ui/styles"
 import styles from "./styles/PaletteListStyles"
 
-const PaletteList = ({ classes, palettes, history }) => {
+const PaletteList = ({ classes, palettes, deletePalette, history }) => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -20,7 +20,9 @@ const PaletteList = ({ classes, palettes, history }) => {
             <MiniPalette
               {...palette}
               key={palette.id}
+              paletteId={palette.id}
               handleClick={() => history.push(`/palette/${palette.id}`)}
+              deletePalette={deletePalette}
             />
           ))}
         </div>

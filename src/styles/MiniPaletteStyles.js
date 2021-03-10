@@ -8,11 +8,14 @@ const styles = {
     transform: "scale(1)",
     boxShadow: "0 0 0px 0px rgba(0, 0, 0, 0.45)",
     transition: "0.3s ease-out",
+    cursor: "pointer",
     "&:hover": {
-      cursor: "pointer",
       transform: "scale(1.05)",
       boxShadow: "0 0 20px 0px rgba(0, 0, 0, 0.45)",
       transition: "0.3s ease-out",
+      "&:hover svg": {
+        opacity: 1,
+      },
     },
   },
   colors: {
@@ -40,6 +43,20 @@ const styles = {
     display: "inline-block",
     position: "relative",
     marginBottom: "-4px",
+  },
+  deleteIcon: {
+    color: "white",
+    backgroundColor: "#eb3d30",
+    position: "absolute",
+    height: "20px",
+    width: "20px",
+    top: "0",
+    right: "0",
+    padding: "8px",
+    borderRadius: "5px",
+    zIndex: "8",
+    opacity: "0",
+    transition: "0.3s ease-out",
   },
 }
 

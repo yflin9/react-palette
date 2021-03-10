@@ -18,6 +18,9 @@ function App() {
   const savePalette = (newPalette) => {
     setPalettes([...palettes, newPalette])
   }
+  const deletePalette = (id) => {
+    setPalettes(palettes.filter((palette) => palette.id !== id))
+  }
   const saveToLocalStorage = (palettes) => {
     localStorage.setItem("palettes", JSON.stringify(palettes))
   }
@@ -32,7 +35,11 @@ function App() {
         exact
         path="/"
         render={(routerProps) => (
-          <PaletteList palettes={palettes} {...routerProps} />
+          <PaletteList
+            palettes={palettes}
+            deletePalette={deletePalette}
+            {...routerProps}
+          />
         )}
       />
 

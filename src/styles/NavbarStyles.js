@@ -1,9 +1,15 @@
+import sizes from "./sizes"
 const styles = {
   Navbar: {
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
     height: "6vh",
+    "& span": {
+      [sizes.below("sm")]: {
+        display: "none",
+      },
+    },
   },
 
   logo: {
@@ -38,6 +44,9 @@ const styles = {
       width: "13px",
       height: "13px",
       marginTop: "-3px",
+    },
+    [sizes.below("md")]: {
+      width: "150px",
     },
   },
   selectContainer: {

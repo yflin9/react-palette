@@ -4,7 +4,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    height: "6vh",
+    height: "4rem",
     "& span": {
       [sizes.below("sm")]: {
         display: "none",
@@ -16,9 +16,11 @@ const styles = {
     height: "100%",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#eee",
+    backgroundColor: "#CC5577",
+    color: "#EED9BC",
     padding: "0 15px",
     marginRight: "15px",
+    fontWeight: "bold",
     fontSize: "1.3rem",
     letterSpacing: "3px",
     "& a": {

@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerTitle: {
     margin: "2rem 0",
+    fontSize: "1.2rem",
   },
   drawerBtn: {
     width: "95%",

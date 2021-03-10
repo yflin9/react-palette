@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import MiniPalette from "./MiniPalette"
 import AddBoxIcon from "@material-ui/icons/AddBox"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 import { withStyles } from "@material-ui/styles"
 import styles from "./styles/PaletteListStyles"
 
@@ -15,17 +16,24 @@ const PaletteList = ({ classes, palettes, deletePalette, history }) => {
             <AddBoxIcon className={classes.addIcon} />
           </Link>
         </nav>
-        <div className={classes.palettes}>
+
+        <TransitionGroup className={classes.palettes}>
           {palettes.map((palette) => (
-            <MiniPalette
-              {...palette}
+            <CSSTransition
               key={palette.id}
-              paletteId={palette.id}
-              handleClick={() => history.push(`/palette/${palette.id}`)}
-              deletePalette={deletePalette}
-            />
+              timeout={350}
+              classNames="miniPalettes"
+            >
+              <MiniPalette
+                {...palette}
+                key={palette.id}
+                paletteId={palette.id}
+                handleClick={() => history.push(`/palette/${palette.id}`)}
+                deletePalette={deletePalette}
+              />
+            </CSSTransition>
           ))}
-        </div>
+        </TransitionGroup>
       </div>
     </div>
   )

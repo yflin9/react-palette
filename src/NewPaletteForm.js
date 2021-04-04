@@ -174,6 +174,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           {paletteIsFull ? "Palette Full" : "Add Color"}
         </Button>
       </Drawer>
+
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
@@ -186,6 +187,7 @@ const NewPaletteForm = ({ history, palettes, savePalette, maxColor }) => {
           removeColor={removeColor}
           axis="xy"
           onSortEnd={onSortEnd}
+          distance={20}
         />
       </main>
     </div>

@@ -64,9 +64,11 @@ const styles = {
     fontSize: "2rem",
     textDecoration: "none",
     color: "white",
+    transform: "scale(1)",
+    transition: "0.3s ease-out",
     "&:hover": {
-      color: "black",
-      transition: "0.3s ease-in-out",
+      transform: "scale(1.25)",
+      transition: "0.3s ease-out",
     },
   },
 }

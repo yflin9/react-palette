@@ -9,6 +9,10 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     margin: "0 auto",
     marginBottom: "-5.5px",
+    cursor: 'grab',
+    '&:active': {
+      cursor: 'grabbing'
+    },
     "&:hover svg": {
       color: "white",
       transform: "scale(1.5)",

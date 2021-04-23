@@ -15,7 +15,7 @@ const styles = {
     position: "relative",
     margin: "0 auto",
     cursor: "pointer",
-    marginBottom: "-3.5px",
+    marginBottom: "-4px",
     backgroundColor: "black",
     "& a": {
       color: "white",
